@@ -1,0 +1,40 @@
+# Multi-stage Docker build for Go microservices
+# Usage: docker build -f Dockerfile.service --build-arg SERVICE=api-gateway .
+
+FROM golang:1.23-alpine AS builder
+
+ARG SERVICE
+WORKDIR /app
+
+RUN apk add --no-cache git ca-certificates
+
+# Cache dependencies
+COPY common/go.mod common/go.sum ./common/
+COPY ${SERVICE}/go.mod ${SERVICE}/go.sum ./${SERVICE}/
+
+WORKDIR /app/${SERVICE}
+RUN go mod download
+
+# Copy source
+WORKDIR /app
+COPY common/ ./common/
+COPY ${SERVICE}/ ./${SERVICE}/
+
+WORKDIR /app/${SERVICE}
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o /app/service .
+
+# Runtime
+FROM alpine:3.20
+RUN apk add --no-cache ca-certificates tzdata
+RUN adduser -D -g '' appuser
+
+COPY --from=builder /app/service /usr/local/bin/service
+COPY --from=builder /etc/ssl/certs/ /etc/ssl/certs/
+
+USER appuser
+EXPOSE 8080
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD wget -qO- http://localhost:8080/v1/health || exit 1
+
+ENTRYPOINT ["service"]

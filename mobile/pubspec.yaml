@@ -1,0 +1,82 @@
+name: iraq_secure_chat
+description: IraqSecureChat - Secure messaging for Iraqi government entities
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.4.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # State management
+  flutter_riverpod: ^2.5.1
+  riverpod_annotation: ^2.3.5
+
+  # Networking
+  dio: ^5.4.3+1
+  web_socket_channel: ^3.0.0
+
+  # Local storage
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+
+  # UI
+  cached_network_image: ^3.3.1
+  flutter_svg: ^2.0.10+1
+  shimmer: ^3.0.0
+  emoji_picker_flutter: ^2.2.0
+  image_picker: ^1.1.2
+  photo_view: ^0.15.0
+  audioplayers: ^6.0.0
+  chewie: ^1.8.1
+  video_player: ^2.9.1
+
+  # Calls
+  flutter_webrtc: ^0.11.0
+
+  # Push notifications
+  firebase_messaging: ^15.0.0
+  firebase_core: ^3.0.0
+  flutter_local_notifications: ^17.2.1+2
+
+  # Auth
+  local_auth: ^2.2.0
+  flutter_secure_storage: ^9.2.2
+
+  # Utilities
+  intl: ^0.19.0
+  path_provider: ^2.1.3
+  connectivity_plus: ^6.0.3
+  share_plus: ^9.0.0
+  url_launcher: ^6.2.6
+  permission_handler: ^11.3.1
+  device_info_plus: ^10.1.0
+  package_info_plus: ^8.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  build_runner: ^2.4.9
+  riverpod_generator: ^2.4.0
+  hive_generator: ^2.0.1
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/locales/
+
+  fonts:
+    - family: Tajawal
+      fonts:
+        - asset: assets/fonts/Tajawal-Regular.ttf
+        - asset: assets/fonts/Tajawal-Bold.ttf
+          weight: 700

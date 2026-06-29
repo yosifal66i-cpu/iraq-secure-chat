@@ -1,0 +1,47 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+
+rule_files:
+  - "alerts.yml"
+
+scrape_configs:
+  - job_name: 'iraqchat-services'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets:
+        - 'api-gateway:8090'
+        - 'auth-service:8091'
+        - 'message-service:8092'
+        - 'media-service:8093'
+        - 'presence-service:8094'
+        - 'websocket-gateway:8095'
+        - 'bot-service:8096'
+        - 'ai-service:8097'
+        - 'notification-service:8098'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: service
+        regex: '([^:]+):\d+'
+        replacement: '$1'
+
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres-exporter:9187']
+
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis-exporter:9121']
+
+  - job_name: 'kafka'
+    static_configs:
+      - targets: ['kafka-exporter:9308']
+
+  - job_name: 'node'
+    static_configs:
+      - targets: ['node-exporter:9100']
