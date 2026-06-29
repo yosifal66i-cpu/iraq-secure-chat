@@ -1,0 +1,68 @@
+{
+  "name": "iraq-secure-chat",
+  "version": "1.0.0",
+  "description": "IraqSecureChat - منصة المراسلة الآمنة للجهات الحكومية العراقية",
+  "main": "src/main.js",
+  "author": "IraqSecureChat",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "build:web": "cd ../web && npm run build",
+    "build:win": "electron-builder --win --x64",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux",
+    "build:all": "npm run build:web && npm run build:win && npm run build:mac && npm run build:linux",
+    "pack": "electron-builder --win --x64 --dir"
+  },
+  "build": {
+    "appId": "gov.iq.iraqchat",
+    "productName": "IraqSecureChat",
+    "directories": {
+      "output": "dist",
+      "buildResources": "assets"
+    },
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "web-dist/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "../infra/docker-compose.yml",
+        "to": "infra/docker-compose.yml"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+      "deleteAppDataOnUninstall": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "IraqSecureChat"
+    },
+    "mac": {
+      "target": ["dmg", "zip"],
+      "category": "public.app-category.social-networking"
+    },
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "category": "Network"
+    }
+  },
+  "dependencies": {
+    "electron-store": "^8.2.0"
+  },
+  "devDependencies": {
+    "electron": "^32.1.0",
+    "electron-builder": "^25.0.5"
+  }
+}
